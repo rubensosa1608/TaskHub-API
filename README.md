@@ -31,15 +31,19 @@ cd tu-repo
 # Instalar dependencias
 npm install
 
+# Generar prisma
+npm run prisma:generate
+
 # Ejecutar migraciones
-npx prisma migrate dev
+npm run prisma:migrate
 
 # Levantar el servidor
 npm run dev
 
 ```
 
-# La API se levantara en 
+# La API se levantara en
+
 http://localhost:PUERTO
 
 ## 📡 Documentación de la API
@@ -63,11 +67,9 @@ Desde Swagger puedes:
 - ✅ Tests
 - ⬜ Deploy
 
-
 ## 👨‍💻 Autor
 
 **Rubén**  
-Proyecto personal de backend para práctica y portfolio.  
+Proyecto personal de backend para práctica y portfolio.
 
 GitHub: [@rubensosa1608](https://github.com/rubensosa1608)
-

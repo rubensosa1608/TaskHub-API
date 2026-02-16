@@ -15,10 +15,10 @@ export class AuthController {
 
       if (!result.success) {
         const errors = result.error?.errors?.map((e) => e.message) || [
-          "Error de validación",
+          "Datos inválidos, asegurese que estan bien escritos",
         ];
         const er = new Error(errors.join(", "));
-        er.status = 400;
+        er.statusCode = 400;
         throw er;
       }
 
@@ -27,7 +27,7 @@ export class AuthController {
       const existingUser = await this.AuthService.findUserByEmail(email);
       if (existingUser) {
         const er = new Error("El correo electrónico ya está en uso");
-        er.status = 409;
+        er.statusCode = 409;
         throw er;
       }
 
@@ -49,10 +49,10 @@ export class AuthController {
 
       if (!result.success) {
         const errors = result.error?.errors?.map((e) => e.message) || [
-          "Error de inicio de sesión",
+          "Datos inválidos, asegurese que estan bien escritos",
         ];
         const er = new Error(errors.join(", "));
-        er.status = 400;
+        er.statusCode = 400;
         throw er;
       }
 
@@ -70,7 +70,7 @@ export class AuthController {
 
       if (!passwordsMatch) {
         const er = new Error("Correo electrónico o contraseña incorrectos");
-        er.status = 401;
+        er.statusCode = 401;
         throw er;
       }
 
