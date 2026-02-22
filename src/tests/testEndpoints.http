@@ -13,9 +13,15 @@ POST http://localhost:8000/auth/login
 Content-Type: application/json
 
 {
-    "email": "user1@gmail.com",
+    "email": "user5@gmail.com",
     "password": "123456"
 }
+
+### verificar token
+POST http://localhost:8000/auth/verify
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsImVtYWlsIjoidXNlcjVAZ21haWwuY29tIiwiaWF0IjoxNzcxNTE4MjA5LCJleHAiOjE3NzE2MDQ2MDl9.5d7cmArSn8_uKWfgSRhmyUr7W41HlmBYTE-n_bggnHU
+
 
 ### crear una task
 POST http://localhost:8000/tasks

@@ -84,4 +84,25 @@ export class AuthController {
       next(err);
     }
   }
+
+  async tokenVerify(req, res, next) {
+    try {
+      const token = req.headers.authorization?.split(" ")[1];
+      if (!token) {
+        const er = new Error("Token de autenticación no proporcionado");
+        er.statusCode = 401;
+        throw er;
+      }
+
+      const decoded = verifyToken(token);
+      res.status(200).json({
+        message: "Token válido",
+        status: "success",
+        user: decoded,
+      });
+     
+    } catch (err) {
+      next(err);
+    }
+  }
 }
