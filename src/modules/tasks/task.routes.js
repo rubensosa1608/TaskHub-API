@@ -154,3 +154,5 @@ taskRouter.put('/:id', TaskControllerI.updateTask)
  *         description: Tarea no encontrada
  */
 taskRouter.delete('/:id', TaskControllerI.deleteTask)
+
+taskRouter.get('/taskNumber/:id', TaskControllerI.getNumberOfTasks)

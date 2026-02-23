@@ -1,154 +1,148 @@
-
-import { ca } from 'zod/locales';
-import * as taskValidator from './task.validators.js'
+import { ca } from "zod/locales";
+import * as taskValidator from "./task.validators.js";
 
 export class TaskController {
+  constructor(TaskService) {
+    this.TaskService = TaskService;
 
-    constructor(TaskService) {
-        this.TaskService = TaskService;
-        
-        this.createTask = this.createTask.bind(this);
-        this.getAllTasks = this.getAllTasks.bind(this);
-        this.updateTask = this.updateTask.bind(this);
-        this.deleteTask = this.deleteTask.bind(this);
-        this.getTaskById = this.getTaskById.bind(this);
+    this.createTask = this.createTask.bind(this);
+    this.getAllTasks = this.getAllTasks.bind(this);
+    this.updateTask = this.updateTask.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
+    this.getTaskById = this.getTaskById.bind(this);
+    this.getNumberOfTasks = this.getNumberOfTasks.bind(this);
+  }
+
+  async createTask(req, res, next) {
+    try {
+      const result = taskValidator.createTaskSchema.safeParse(req.body);
+
+      if (!result.success) {
+        const er = new Error(
+          result.error.errors.map((e) => e.message).join(", "),
+        );
+        er.status = 400;
+        throw er;
+      }
+
+      const { title, description, priority, limit_date, user_id } = result.data;
+
+      const newTask = await this.TaskService.createTask({
+        title,
+        description,
+        priority,
+        limit_date,
+        user_id,
+      });
+
+      res.status(201).json({
+        message: "Tarea creada exitosamente",
+        task: newTask,
+      });
+    } catch (err) {
+      next(err);
     }
-        
-    async createTask (req, res, next) {
+  }
 
-        try {
-            const result = taskValidator.createTaskSchema.safeParse(req.body);
-            
-            if (!result.success) {
-              const er = new Error(
-              result.error.errors.map(e => e.message).join(', ')
-            );
-            er.status = 400;
-            throw er;
-          }
+  async getAllTasks(req, res, next) {
+    try {
+      const userId = parseInt(req.params.idUser, 10); // convierte "2" -> 2
 
-            const { title, description, priority, limit_date, user_id } = result.data;
-            
-            const newTask = await this.TaskService.createTask({
-                title,
-                description,
-                priority,
-                limit_date,
-                user_id
-            });
+      const tasks = await this.TaskService.getAllTasks(userId);
 
-            res.status(201).json({
-                message: 'Tarea creada exitosamente',
-                task: newTask
-            });
+      if (tasks.length === 0) {
+        const er = new Error("No se encontraron tareas para este usuario");
+        er.status = 404;
+        throw er;
+      }
 
-        } catch (err) {
-            next(err);
-        }
-
+      res.status(200).json({
+        message: "Tareas obtenidas exitosamente",
+        tasks: tasks,
+      });
+    } catch (err) {
+      next(err);
     }
+  }
 
-    async getAllTasks (req, res, next) {
+  async getTaskById(req, res, next) {
+    try {
+      const idTask = parseInt(req.params.id, 10);
 
-        try {
-            const userId = parseInt(req.params.idUser, 10); // convierte "2" -> 2
+      const task = await this.TaskService.getTaskById(idTask);
 
-            const tasks = await this.TaskService.getAllTasks( userId );
+      if (!task) {
+        const er = new Error("Tarea no encontrada");
+        er.status = 404;
+        throw er;
+      }
 
-            if (tasks.length === 0) {
-                const er = new Error('No se encontraron tareas para este usuario');
-                er.status = 404;
-                throw er;
-            }
-
-            res.status(200).json({
-                message: 'Tareas obtenidas exitosamente',
-                tasks: tasks
-            });
-
-        } catch (err) {
-            next(err);
-        }
-
+      res.status(200).json({
+        message: "Tarea obtenida exitosamente",
+        task: task,
+      });
+    } catch (err) {
+      next(err);
     }
-    
-    async getTaskById (req, res, next) {
+  }
 
-        try {
-            const idTask = parseInt(req.params.id, 10);
+  async updateTask(req, res, next) {
+    try {
+      const idTask = parseInt(req.params.id, 10);
+      const result = taskValidator.updateTaskSchema.safeParse(req.body);
 
-            const task = await this.TaskService.getTaskById( idTask );
+      if (!result.success) {
+        const er = new Error(
+          result.error.errors.map((e) => e.message).join(", "),
+        );
+        er.status = 400;
+        throw er;
+      }
 
-            if (!task) {
-                const er = new Error('Tarea no encontrada');
-                er.status = 404;
-                throw er;
-            }
+      const updates = result.data;
 
-            res.status(200).json({
-                message: 'Tarea obtenida exitosamente',
-                task: task
-            });
+      const updatedTask = await this.TaskService.updateTask(idTask, updates);
 
-        } catch (err) {
-            next(err);
-        }
-    
+      res.status(200).json({
+        message: "Tarea actualizada exitosamente",
+        task: updatedTask,
+      });
+    } catch (err) {
+      next(err);
     }
+  }
 
-    async updateTask (req, res, next) {
+  async deleteTask(req, res, next) {
+    try {
+      const idTask = parseInt(req.params.id, 10);
 
-        try {
+      await this.TaskService.deleteTask(idTask);
 
-            const idTask = parseInt(req.params.id, 10);
-            const result = taskValidator.updateTaskSchema.safeParse(req.body);
+      if (!idTask) {
+        const er = new Error("Tarea no encontrada");
+        er.status = 404;
+        throw er;
+      }
 
-            if (!result.success) {
-                const er = new Error(
-                    result.error.errors.map(e => e.message).join(', ')
-                );
-                er.status = 400;
-                throw er;
-            }
-
-            const updates = result.data;
-
-            const updatedTask = await this.TaskService.updateTask( idTask, updates );
-
-            res.status(200).json({
-                message: 'Tarea actualizada exitosamente',
-                task: updatedTask
-            });
-            
-        } catch (err) {
-            next (err);
-        }
-
+      res.status(200).json({
+        message: "Tarea eliminanda exitosamente",
+      });
+    } catch (err) {
+      next(err);
     }
+  }
 
-    async  deleteTask (req, res, next) {
+  async getNumberOfTasks(req, res, next) {
+    try {
+      const userId = parseInt(req.params.id, 10);
+      const tasksNumber = await this.TaskService.getNumberOfTasks(userId);
 
-        try {
-            
-            const idTask = parseInt(req.params.id, 10);
-
-            await this.TaskService.deleteTask( idTask );
-
-            if (!idTask) {
-                const er = new Error('Tarea no encontrada');
-                er.status = 404;
-                throw er;
-            }
-
-            res.status(200).json({
-                message: 'Tarea eliminanda exitosamente'
-            })
-
-        } catch (err) {
-            next(err);
-        }
-
+      res.status(200).json({
+        message: "Número de tareas obtenidas exitosamente",
+        numberOfTasks: tasksNumber,
+      });
+    } catch (err) {
+      next(err);
     }
-        
+  }
 }
-
