@@ -13,7 +13,7 @@ POST http://localhost:8000/auth/login
 Content-Type: application/json
 
 {
-    "email": "user5@gmail.com",
+    "email": "user1@gmail.com",
     "password": "123456"
 }
 
@@ -37,16 +37,16 @@ Authorization: Bearer Token
 }
 
 ### obtener todas las tasks de un usuario
-GET http://localhost:8000/tasks/tasksUser/18
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwiaWF0IjoxNzY4MzI4OTM0LCJleHAiOjE3NjgzMzI1MzR9.C1squ6PNS172AFjRnggi2LIWrqa2H44_xoS08tEl-n8
+GET http://localhost:8000/tasks/tasksUser/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzIxMjA1NTcsImV4cCI6MTc3MjIwNjk1N30.DtVDWIplLLLzNsy2xM4XXEY_X7rQJpI4r5NChTAj2p8
 
 ### obtener numero de tasks de un usuario
-GET http://localhost:8000/tasks/taskNumber/25
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsImVtYWlsIjoidXNlcjVAZ21haWwuY29tIiwiaWF0IjoxNzcxODcyOTgyLCJleHAiOjE3NzE5NTkzODJ9.bXkzpRRzX5nog1Kf5BnUqmB8I0vaA5MqC1Jf0gGlRT8
+GET http://localhost:8000/tasks/taskNumber/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3NzIxMjA1NTcsImV4cCI6MTc3MjIwNjk1N30.DtVDWIplLLLzNsy2xM4XXEY_X7rQJpI4r5NChTAj2p8
 
 ### obtener una task por id
-GET http://localhost:8000/tasks/2
-Authorization: Bearer Token
+GET http://localhost:8000/tasks/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjUsImVtYWlsIjoidXNlcjVAZ21haWwuY29tIiwiaWF0IjoxNzcyMDM5NTEyLCJleHAiOjE3NzIxMjU5MTJ9.pVopfx_FVyj20XRjoHieOkaSPTp99fcS85dUO8-WqeQ
 
 ### actualizar una task
 PUT http://localhost:8000/tasks/2

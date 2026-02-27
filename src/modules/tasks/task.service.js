@@ -31,14 +31,17 @@ export class TaskService {
   }
 
   async getAllTasks(idUser) {
-    const tasks = await prisma.tasks.findMany({
-      where: {
-        user_id: idUser,
-      },
-    });
+  const tasks = await prisma.tasks.findMany({
+    where: {
+      user_id: idUser,
+    },
+    include: {
+      category: true, // <-- esto hace el JOIN
+    },
+  });
 
-    return tasks;
-  }
+  return tasks;
+}
 
   async getTaskById(idTask) {
     const task = await prisma.tasks.findUnique({
