@@ -25,14 +25,16 @@ export class TaskController {
         throw er;
       }
 
-      const { title, description, priority, limit_date, user_id } = result.data;
+      const { title, description, priority,state, limit_date, user_id, category_id } = result.data;
 
       const newTask = await this.TaskService.createTask({
         title,
         description,
         priority,
+        state,
         limit_date,
         user_id,
+        category_id
       });
 
       res.status(201).json({
@@ -100,7 +102,6 @@ export class TaskController {
       }
 
       const updates = result.data;
-
       const updatedTask = await this.TaskService.updateTask(idTask, updates);
 
       res.status(200).json({

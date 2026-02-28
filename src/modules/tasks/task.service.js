@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
+import { tasks_state } from "@prisma/client"
 
 export class TaskService {
   async createTask(data) {
@@ -22,8 +23,10 @@ export class TaskService {
         title: data.title,
         description: data.description || null,
         priority,
+        state: data.state || tasks_state.Sin_Empezar,
         limit_date: limitDate,
         user_id: data.user_id,
+        category_id: data.category_id || null,
       },
     });
 
@@ -71,11 +74,13 @@ export class TaskService {
       where: {
         id: idTask,
       },
-      data: {
+     data: {
         title: data.title,
         description: data.description || null,
         priority,
+        state: data.state || tasks_state.Sin_Empezar,
         limit_date: limitDate,
+        category_id: data.category_id || null,
       },
     });
 
