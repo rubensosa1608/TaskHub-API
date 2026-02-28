@@ -1,4 +1,3 @@
-import { ca } from "zod/locales";
 import * as taskValidator from "./task.validators.js";
 
 export class TaskController {
@@ -96,7 +95,7 @@ export class TaskController {
       if (!result.success) {
         const er = new Error(
           result.error.errors.map((e) => e.message).join(", "),
-        );
+);
         er.status = 400;
         throw er;
       }
