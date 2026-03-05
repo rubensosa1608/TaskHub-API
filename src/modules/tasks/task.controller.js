@@ -10,6 +10,9 @@ export class TaskController {
     this.deleteTask = this.deleteTask.bind(this);
     this.getTaskById = this.getTaskById.bind(this);
     this.getNumberOfTasks = this.getNumberOfTasks.bind(this);
+    this.getNumberOfTasksFavorites = this.getNumberOfTasksFavorites.bind(this);
+    this.getNumberOfTasksArchived = this.getNumberOfTasksArchived.bind(this);
+    this.getNumberOfTasksActived = this.getNumberOfTasksActived.bind(this);
   }
 
   async createTask(req, res, next) {
@@ -24,7 +27,15 @@ export class TaskController {
         throw er;
       }
 
-      const { title, description, priority,state, limit_date, user_id, category_id } = result.data;
+      const {
+        title,
+        description,
+        priority,
+        state,
+        limit_date,
+        user_id,
+        category_id,
+      } = result.data;
 
       const newTask = await this.TaskService.createTask({
         title,
@@ -33,7 +44,7 @@ export class TaskController {
         state,
         limit_date,
         user_id,
-        category_id
+        category_id,
       });
 
       res.status(201).json({
@@ -95,7 +106,7 @@ export class TaskController {
       if (!result.success) {
         const er = new Error(
           result.error.errors.map((e) => e.message).join(", "),
-);
+        );
         er.status = 400;
         throw er;
       }
@@ -142,6 +153,51 @@ export class TaskController {
         numberOfTasks: tasksNumber,
       });
     } catch (err) {
+      next(err);
+    }
+  }
+
+  async getNumberOfTasksFavorites(req, res, next) {
+    try {
+      const userId = parseInt(req.params.id, 10);
+      const tasksNumber =
+        await this.TaskService.getNumberOfTasksFavorites(userId);
+
+      res.status(200).json({
+        message: "Número de tareas favoritas obtenidas exitosamente",
+        numberOfTasks: tasksNumber,
+      });
+    } catch (error) {
+      next(err);
+    }
+  }
+
+  async getNumberOfTasksArchived(req, res, next) {
+    try {
+      const userId = parseInt(req.params.id, 10);
+      const tasksNumber =
+        await this.TaskService.getNumberOfTasksArchived(userId);
+
+      res.status(200).json({
+        message: "Número de tareas archivadas obtenidas exitosamente",
+        numberOfTasks: tasksNumber,
+      });
+    } catch (error) {
+      next(err);
+    }
+  }
+
+    async getNumberOfTasksActived(req, res, next) {
+    try {
+      const userId = parseInt(req.params.id, 10);
+      const tasksNumber =
+        await this.TaskService.getNumberOfTasksActived(userId);
+
+      res.status(200).json({
+        message: "Número de tareas activas obtenidas exitosamente",
+        numberOfTasks: tasksNumber,
+      });
+    } catch (error) {
       next(err);
     }
   }

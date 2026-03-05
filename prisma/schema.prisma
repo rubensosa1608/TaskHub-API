@@ -41,9 +41,10 @@ model Users {
 
 model Category {
   id        Int     @id @default(autoincrement())
-  name    String
-  userId    Int
-  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String  @unique
+  isDefault Boolean @default(false) 
+  user_id   Int
+  user      Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at  DateTime?       @default(now()) @db.Timestamp(0)
   updated_at  DateTime?       @default(now()) @db.Timestamp(0)
 
@@ -57,7 +58,7 @@ enum tasks_priority {
 }
 
 enum tasks_state {
-  Completado     @map("Completo")
+  Completado   @map("Completo")
   En_Proceso   @map("En proceso")
   Sin_Empezar  @map("Sin empezar")
 }

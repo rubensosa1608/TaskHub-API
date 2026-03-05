@@ -155,4 +155,8 @@ taskRouter.put('/:id', TaskControllerI.updateTask)
  */
 taskRouter.delete('/:id', TaskControllerI.deleteTask)
 
+// Rutas para obtener numero de tareas, y tareas favoritas y archivadas
 taskRouter.get('/taskNumber/:id', TaskControllerI.getNumberOfTasks)
+taskRouter.get('/taskNumberFavorites/:id', TaskControllerI.getNumberOfTasksFavorites)
+taskRouter.get('/taskNumberArchived/:id', TaskControllerI.getNumberOfTasksArchived)
+taskRouter.get('/taskNumberActived/:id', TaskControllerI.getNumberOfTasksActived)

@@ -25,7 +25,7 @@ export class CategoryController {
 
       const category = await this.CategoryService.createCategory({
         name: result.data.name,
-        user_id: req.user.id,
+        user_id: result.data.user_id,
       });
 
       res.status(201).json(category);
@@ -58,8 +58,7 @@ export class CategoryController {
 
   async getCategoryById(req, res, next) {
     try {
-      const idCategory = parseInt(req.params.idCategory, 10);
-
+      const idCategory = parseInt(req.params.id, 10);
       const category = await this.CategoryService.getCategoryById(idCategory);
 
       if (!category) {
@@ -79,7 +78,7 @@ export class CategoryController {
 
   async updateCategory(req, res, next) {
     try {
-      const idCategory = parseInt(req.params.idCategory, 10);
+      const idCategory = parseInt(req.params.id, 10);
       const result = categoryValidator.updateCategorySchema.safeParse(req.body);
 
       if (!result.success) {
@@ -107,7 +106,7 @@ export class CategoryController {
 
   async deleteCategory(req, res, next) {
     try {
-      const idCategory = parseInt(req.params.idCategory, 10);
+      const idCategory = parseInt(req.params.id, 10);
 
       await this.CategoryService.deleteCategory(idCategory);
 

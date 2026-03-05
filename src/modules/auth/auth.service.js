@@ -11,11 +11,12 @@ export class AuthService {
         password: hashedPassword,
         categories: {
           create: [
-            { name: "Personal" },
-            { name: "Trabajo" },
-            { name: "Salud" },
-            { name: "Estudios" },
-            { name: "Ocio"}
+            { name: "Favoritos", isDefault: true },
+            { name: "Archivados", isDefault: true },
+            { name: "Salud", isDefault: false },
+            { name: "Estudios", isDefault: false },
+            { name: "Ocio", isDefault: false },
+            { name: "Trabajo", isDefault: false },
           ],
         },
       },

@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
-import { tasks_state } from "@prisma/client"
+import { tasks_state } from "@prisma/client";
 
 export class TaskService {
   async createTask(data) {
@@ -34,17 +34,17 @@ export class TaskService {
   }
 
   async getAllTasks(idUser) {
-  const tasks = await prisma.tasks.findMany({
-    where: {
-      user_id: idUser,
-    },
-    include: {
-      category: true, // <-- esto hace el JOIN
-    },
-  });
+    const tasks = await prisma.tasks.findMany({
+      where: {
+        user_id: idUser,
+      },
+      include: {
+        category: true, // <-- esto hace el JOIN
+      },
+    });
 
-  return tasks;
-}
+    return tasks;
+  }
 
   async getTaskById(idTask) {
     const task = await prisma.tasks.findUnique({
@@ -74,7 +74,7 @@ export class TaskService {
       where: {
         id: idTask,
       },
-     data: {
+      data: {
         title: data.title,
         description: data.description || null,
         priority,
@@ -112,6 +112,38 @@ export class TaskService {
       },
     });
 
+    return count;
+  }
+
+  async getNumberOfTasksFavorites(idUser) {
+    const count = await prisma.tasks.count({
+      where: {
+        user_id: idUser,
+        category_id: 1,
+      },
+    });
+    return count;
+  }
+
+  async getNumberOfTasksArchived(idUser) {
+    const count = await prisma.tasks.count({
+      where: {
+        user_id: idUser,
+        category_id: 2,
+      },
+    });
+    return count;
+  }
+
+  async getNumberOfTasksActived(idUser) {
+    const count = await prisma.tasks.count({
+      where: {
+        user_id: idUser,
+        state: {
+          not: "Completado",
+        },
+      },
+    });
     return count;
   }
 }

@@ -5,6 +5,7 @@ export class CategoryService {
     const category = await prisma.category.create({
       data: {
         name: data.name,
+        isDefault: false,
         user_id: data.user_id,
       },
     });
